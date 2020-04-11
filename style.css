@@ -1,0 +1,9 @@
+#find-city {
+    display: block;
+    margin: auto;
+}
+
+#title {
+   text-transform: capitalize;
+   text-align: center;
+}

@@ -1,75 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Station</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <nav class="navbar navbar-dark bg-dark">
+        <form id="city-form">
+            <h1 id="title"><strong>SEARCH FOR YOUR CITY</strong></h1>
+            <input type="text" id="city-input" class="form-control" style="text-align: center;"><br>
+            <button id="find-city" type="button" class="btn btn-primary">Search</button>
+        </form>
 
-    <form id="city-form">
-        <label for="city-input">Search for your city!</label>
-        <input type="text" id="city-input"><br>
-  
-        <!-- This button will trigger our AJAX call -->
-        <input id="find-city" type="submit" value="City Search">
-      </form>
 
+    </nav>
     <div class="jumbotron">
-        <div class="row">Today's Weather
-            <div class="col-md-4">
-                <div id="icon">
-
-                </div>
+        <div class="row">
+            <div class="col-md-3" id="cityName" style="text-align: center;">
 
 
             </div>
-        <div class="col-md-8">
+            <div class="col-md-3" id="icon" style="text-align: center;">
+
+
+            </div>
+            <div class="col-md-3" id="temp" style="text-align: center;">
+
+
+            </div>
+            <div class="col-md-3" id="humid" style="text-align: center;">
 
 
             </div>
 
         </div>
-      </div>
-    
+        <div class="row">
+            <div class="col-md-3" id="date" style="text-align: center;">
+
+            </div>
+            <div class="col-md-3" id="icond" style="text-align: center;">
+
+
+            </div>
+            <div class="col-md-3" id="windSpeed" style="text-align: center;">
+
+
+            </div>
+            <div class="col-md-3" id="uv" style="text-align: center;">
+
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row" id="fiveDay">
+
+        <div class="col-md-1"></div>
+
+        <div class="col-md-2">
+            <div class="card" style="width: 18rem;">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title" id="day1" style="text-align: center;"></h5>
+                    <p class="card-text" id="1info" style="text-align: center;"></p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card" style="width: 18rem;">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title" id="day2" style="text-align: center;"></h5>
+                    <p class="card-text" id="2info" style="text-align: center;"></p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card" style="width: 18rem;">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title" id="day3" style="text-align: center;"></h5>
+                    <p class="card-text" id="3info" style="text-align: center;"></p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card" style="width: 18rem;">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title" id="day4" style="text-align: center;"></h5>
+                    <p class="card-text" id="4info" style="text-align: center;"></p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card" style="width: 18rem;">
+                <img src="..." class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title" id="day5" style="text-align: center;"></h5>
+                    <p class="card-text" id="5info" style="text-align: center;"></p>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-1"></div>
+    </div>
 
 
 
 
 
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+        crossorigin="anonymous"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <script>
+
+        $("#find-city").on("click", function (event) {
+            event.preventDefault();
+            var city = $("#city-input").val()
+            console.log(city)
 
 
+            var APIKey = "a8936c46436c87f5e738031fb671197b";
+            var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=" + APIKey + "&units=imperial";
+            console.log(queryURL);
+
+            var now = new Date();
+            now.setDate(now.getDate());
+
+            var formattedDate = new Date(now);
+            var d = formattedDate.getDate();
+            var m = formattedDate.getMonth();
+            m += 1;  // JavaScript months are 0-11
+            var y = formattedDate.getFullYear();
 
 
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-<script>
-$("#find-city").on("click", function (event) {
-event.preventDefault();
-var city = $("#city-input").val()});
-console.log(city)
+            $.ajax({
+                url: queryURL,
+                type: "GET",
+                dataType: "json",
+            }).then(function (response) {
+                var results = response;
+                console.log(results);
 
-var APIKey= "a8936c46436c87f5e738031fb671197b";
-var queryURL = "http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=" + APIKey;
+                $("#cityName").append(city);
 
- $.ajax({
-       url: queryURL,
-       method: "GET"
-     }).then(function(response) {
+                $("#icon").append(response.weather[0].icon);
 
-        console.log(queryURL);
-        console.log(repsonse);
+                $("#temp").append("Temperature: " + response.main.temp + "F");
 
-     $("#icon").append(`img src=${response.icon}/>`)
-     });
+                $("#humid").append("Humidity: " + response.main.humidity + "%");
 
-    ;
+                $("#date").append("Date: " + m + ", " + d + ", " + y);
+
+                $("#icond").append(response.weather[0].main);
+
+                $("#windSpeed").append("Wind Speed:" + response.wind.speed + "mph");
+
+                $("#uv").append("UV Index:");
+
+                $("#day1").append(m + ", " + (d + 1) + ", " + y);
+                $("#day2").append(m + ", " + (d + 2) + ", " + y);
+                $("#day3").append(m + ", " + (d + 3) + ", " + y);
+                $("#day4").append(m + ", " + (d + 4) + ", " + y);
+                $("#day5").append(m + ", " + (d + 5) + ", " + y);
+
+                $("#1info").append("Temperature: " + response.main.temp + "F",
+                    "Humidity: " + response.main.humidity);
+                $("#2info").append("Temperature: " + response.main.temp + "F");
+                $("#3info").append("Temperature: " + response.main.temp + "F");
+                $("#4info").append("Temperature: " + response.main.temp + "F");
+                $("#5info").append("Temperature: " + response.main.temp + "F");
 
 
-</script>
+            });
+
+
+        });
+    </script>
 </body>
+
 </html>
